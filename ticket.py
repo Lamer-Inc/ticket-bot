@@ -12,7 +12,7 @@ import interactions
 
 
 # token del bot, posso rigenerarlo se necessario, su github verrà censurato
-bt = 'OTc1NzU1NTE2MzgwODYwNDg5.GInrx7.NIHOZud47cie5wHD12h1eyzn4nL-889VkHKCtU'
+bt = 'OTc1NzU1NTE2MzgwODYwNDg5.GInrx7.NIH********************************'
 
 print("Applicazione avviata")
 
