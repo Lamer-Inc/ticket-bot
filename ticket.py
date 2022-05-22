@@ -12,7 +12,7 @@ import interactions
 
 
 # token del bot, posso rigenerarlo se necessario, su github verrà censurato
-bt = 'OTc1NzU1NTE2MzgwODYwNDg5.GInrx7.NIH********************************'
+bt = 'OTc1NzU1NTE2MzgwODYwNDg5.GInrx7.NIHOZud47cie5wHD12h1eyzn4nL-889VkHKCtU'
 
 print("Applicazione avviata")
 
@@ -26,7 +26,7 @@ b.remove_command("help")
 # https://python.plainenglish.io/how-to-change-discord-bot-status-with-discord-py-39219c8fceea
 @b.event
 async def on_ready():
-    await b.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='!help for commands'))
+    await b.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='Made for PaЯRoT ™#2467 by DiStRuTtOrE_Tm#6449'))
 
 
 # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
@@ -53,12 +53,12 @@ async def on_command_error(ctx, error):
 
 
 # ---------------------------------------------------------------------------------------------------
-#vecchia parte con i comandi a mano
+
 
 @b.command(name='ticket', help='Crea un canale per parlare con gli admin del server')
 async def ticket(ctx, *, args):
-    guild = b.get_guild(930511259416272917)
-    c = guild.get_channel(976158359717810246)
+    guild = b.get_guild(975496826369237062)
+    c = guild.get_channel(977937133094449222)
     if ctx.message.channel == c:
 
         embed = discord.Embed(title='**Ticket creato!**',
@@ -118,13 +118,11 @@ async def ticket(ctx, *, args):
 # print('!')
 
 # ----------------------------------------------------------------------------------------------------------------------
-#sezione con il reaction ticket
-
 @b.event
 async def on_reaction_add(em, u):
     if em.emoji == '🎫':
-        guild = b.get_guild(930511259416272917)
-        category = discord.utils.get(guild.channels, id=975762506641444884)
+        guild = b.get_guild(975496826369237062)
+        category = discord.utils.get(guild.channels, id=977937083387756674)
         ex = discord.utils.get(guild.text_channels, name=u.name.lower()+'-ticket')
         if ex:
             None
