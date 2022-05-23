@@ -28,7 +28,7 @@ b.remove_command("help")
 # https://python.plainenglish.io/how-to-change-discord-bot-status-with-discord-py-39219c8fceea
 @b.event
 async def on_ready():
-    await b.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='Made for PaЯRoT ™#2467 by DiStRuTtOrE_Tm#6449'))
+    await b.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='!help per i comandi'))
 
 
 # °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
