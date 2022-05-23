@@ -1,6 +1,8 @@
 # ignora gli import extra, copia e incollati da altri miei bot per risparmiare tempo
 import asyncio
 import json
+import time
+
 import discord
 import requests
 from discord import Embed
@@ -12,7 +14,7 @@ import interactions
 
 
 # token del bot, posso rigenerarlo se necessario, su github verrà censurato
-bt = 'OTc1NzU1NTE2MzgwODYwNDg5.GInrx7.NIHOZud47ci************************'
+bt = 'OTc1NzU1NTE2MzgwODYwNDg5.GInrx7.NIHOZud47cie5wHD12h1eyzn4nL-889VkHKCtU'
 
 print("Applicazione avviata")
 
@@ -53,7 +55,7 @@ async def on_command_error(ctx, error):
 
 
 # ---------------------------------------------------------------------------------------------------
-
+# TUTTI STI AFFARI NON SERVONO, IL BOT FUNZIONA CON LE REAZIONI E VA MOLTO MEGLIO
 
 @b.command(name='ticket', help='Crea un canale per parlare con gli admin del server')
 async def ticket(ctx, *, args):
@@ -118,24 +120,33 @@ async def ticket(ctx, *, args):
 # print('!')
 
 # ----------------------------------------------------------------------------------------------------------------------
+# il bot inizia effettivamente da qua, non mi aggrada il fatto di dover mettere gli ID a mano
+
 @b.event
 async def on_reaction_add(em, u):
     if em.emoji == '🎫':
-        guild = b.get_guild(975496826369237062)
-        category = discord.utils.get(guild.channels, id=977937083387756674)
-        ex = discord.utils.get(guild.text_channels, name=u.name.lower()+'-ticket')
-        if ex:
+        if u.id == 975755516380860489:
             None
         else:
-            ticket_channel = await guild.create_text_channel(name='{}-ticket'.format(u.name),
+            guild = b.get_guild(975496826369237062)
+            category = discord.utils.get(guild.channels, id=977937083387756674)
+            ex = discord.utils.get(guild.text_channels, name=u.name.lower()+'-ticket')
+            if ex:
+                None
+            else:
+                ticket_channel = await guild.create_text_channel(name='{}-ticket'.format(u.name),
                                                              category=category)
 
-            await ticket_channel.set_permissions(guild.get_role(guild.id), send_messages=False, read_messages=False)
-            await ticket_channel.set_permissions(u, send_messages=True, read_messages=True, add_reactions=True,
+                await ticket_channel.set_permissions(guild.get_role(guild.id), send_messages=False, read_messages=False)
+                await ticket_channel.set_permissions(u, send_messages=True, read_messages=True, add_reactions=True,
                                              embed_links=True, attach_files=True, read_message_history=True,
                                              external_emojis=True)
     elif em.emoji == '✔️':
-        await em.channel_delete(reason='Il seguente ticket è stato chiuso')
+        if u.id == 975755516380860489:
+            None
+        else:
+            time.sleep(5)
+            await em.message.channel.delete(reason='Il seguente ticket è stato chiuso')
 
 
 
@@ -161,6 +172,8 @@ async def close(ctx):
         ems = await ctx.send(embed=embed)
         mj = '✔️'
         await ems.add_reaction(emoji=mj)
+    else:
+        await ctx.send('Con questo comando puoi chiudere solamente il tuo ticket')
 
 
 
