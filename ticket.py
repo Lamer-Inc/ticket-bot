@@ -14,7 +14,7 @@ import interactions
 
 
 # token del bot, posso rigenerarlo se necessario, su github verrà censurato
-bt = 'OTc1NzU1NTE2MzgwODYwNDg5.GInrx7.NIHOZud47cie5wHD12h1eyzn4nL-********'
+bt = 'OTc1NzU1NTE2MzgwODYwNDg5.GInrx7.NIHOZud47cie5wHD12h1eyzn4nL-**********'
 
 print("Applicazione avviata")
 
@@ -141,6 +141,24 @@ async def on_reaction_add(em, u):
                 await ticket_channel.set_permissions(u, send_messages=True, read_messages=True, add_reactions=True,
                                              embed_links=True, attach_files=True, read_message_history=True,
                                              external_emojis=True)
+                staff_ds = discord.utils.get(guild.roles, id=976147012678479912)
+                staff_cb = discord.utils.get(guild.roles, id=976172571450040330)
+                await ticket_channel.set_permissions(staff_ds, send_messages=True, read_messages=True, add_reactions=True,
+                                                     embed_links=True, attach_files=True, read_message_history=True,
+                                                     external_emojis=True, manage_messages=True)
+                await ticket_channel.set_permissions(staff_cb, send_messages=True, read_messages=True,
+                                                     add_reactions=True,
+                                                     embed_links=True, attach_files=True, read_message_history=True,
+                                                     external_emojis=True, manage_messages=True)
+                embed = discord.Embed(title='**Ticket creato!**',
+                                      color=discord.Color.green())
+                embed.add_field(name="**Autore del ticket**: ", value=u.mention, inline=True)
+                embed.add_field(name='**Come funziona il ticket**?',
+                                value='Attendi che uno ' + staff_ds.mention + ' o uno ' + staff_cb.mention + ' ti risponda, nel mentre descrivi il tuo problema',
+                                inline=False)
+                embed.add_field(name='Per chiudere il ticket digita: ', value='!close')
+                embed.set_footer(text="Ticket made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
+                await ticket_channel.send(embed=embed)
     elif em.emoji == '✔️':
         if u.id == 975755516380860489:
             None
@@ -166,7 +184,7 @@ async def set(ctx):
 
 @b.command()
 async def close(ctx):
-    if ctx.channel.name == ctx.author.name.lower()+'-ticket':
+    if "-ticket" in ctx.message.channel.name:
         embed = discord.Embed(name='Chiusura ticket', color=discord.Color.dark_orange())
         embed.add_field(name='Con questo comando puoi chiudere un ticket aperto', value='Reagisci con ✔️ per chiudere il ticket. Una volta chiuso tutti i messaggi al suo interno verranno eliminati', inline=False)
         ems = await ctx.send(embed=embed)
@@ -176,5 +194,17 @@ async def close(ctx):
         await ctx.send('Con questo comando puoi chiudere solamente il tuo ticket')
 
 
+@b.command()
+async def help(ctx):
+    embed = discord.Embed(title='Aiuto e Crediti', color=discord.Color.red())
+    embed.add_field(name='**Lista Comandi**', value='Lista dei comandi del bot!', inline=False)
+    embed.add_field(name='!set', value='SOLO STAFF!!! Utilizza il comando nel canale in cui vuoi che gli utenti aprano i ticket', inline=False)
+    embed.add_field(name='Come ottenere supporto?', value='Recati nel canale apertura ticket e aggiungi una reazione al messaggio del bot. Il bot aprirà un ticket a tuo nome in cui fornirà ulteriori spiegazioni', inline=False)
+    embed.add_field(name='!close', value="Utilizza il comando in un canale ticket per chiudere il canale. Prima che l'azione avvenga, il bot chiederà una conferma aggiuntiva", inline=False)
+    embed.add_field(name='Maggiori info e documentazione del bot: ', value='https://telegra.ph/ParrotBot-05-22', inline=False)
+    embed.add_field(name='Creatore del bot: ', value='DiStRuTtOrE_Tm#6449 (ID=586202654087184384)',
+                    inline=False)
+    embed.set_footer(text="Ticket bot made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
+    await ctx.send(embed=embed)
 
 b.run(bt)
