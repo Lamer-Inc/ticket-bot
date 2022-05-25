@@ -128,43 +128,49 @@ async def on_reaction_add(em, u):
         if u.id == 975755516380860489:
             None
         else:
-            guild = b.get_guild(975496826369237062)
-            category = discord.utils.get(guild.channels, id=977937083387756674)
-            ex = discord.utils.get(guild.text_channels, name=u.name.lower()+'-ticket')
-            if ex:
-                None
-            else:
-                ticket_channel = await guild.create_text_channel(name='{}-ticket'.format(u.name),
+            if 'apertura-ticket' in em.message.channel.name:
+                guild = b.get_guild(975496826369237062)
+                category = discord.utils.get(guild.channels, id=977937083387756674)
+                ex = discord.utils.get(guild.text_channels, name=u.name.lower()+'-ticket')
+                if ex:
+                    None
+                else:
+                    ticket_channel = await guild.create_text_channel(name='{}-ticket'.format(u.name),
                                                              category=category)
 
-                await ticket_channel.set_permissions(guild.get_role(guild.id), send_messages=False, read_messages=False)
-                await ticket_channel.set_permissions(u, send_messages=True, read_messages=True, add_reactions=True,
+                    await ticket_channel.set_permissions(guild.get_role(guild.id), send_messages=False, read_messages=False)
+                    await ticket_channel.set_permissions(u, send_messages=True, read_messages=True, add_reactions=True,
                                              embed_links=True, attach_files=True, read_message_history=True,
                                              external_emojis=True)
-                staff_ds = discord.utils.get(guild.roles, id=976147012678479912)
-                staff_cb = discord.utils.get(guild.roles, id=976172571450040330)
-                await ticket_channel.set_permissions(staff_ds, send_messages=True, read_messages=True, add_reactions=True,
+                    staff_ds = discord.utils.get(guild.roles, id=976147012678479912)
+                    staff_cb = discord.utils.get(guild.roles, id=976172571450040330)
+                    await ticket_channel.set_permissions(staff_ds, send_messages=True, read_messages=True, add_reactions=True,
                                                      embed_links=True, attach_files=True, read_message_history=True,
                                                      external_emojis=True, manage_messages=True)
-                await ticket_channel.set_permissions(staff_cb, send_messages=True, read_messages=True,
+                    await ticket_channel.set_permissions(staff_cb, send_messages=True, read_messages=True,
                                                      add_reactions=True,
                                                      embed_links=True, attach_files=True, read_message_history=True,
                                                      external_emojis=True, manage_messages=True)
-                embed = discord.Embed(title='**Ticket creato!**',
+                    embed = discord.Embed(title='**Ticket creato!**',
                                       color=discord.Color.green())
-                embed.add_field(name="**Autore del ticket**: ", value=u.mention, inline=True)
-                embed.add_field(name='**Come funziona il ticket**?',
+                    embed.add_field(name="**Autore del ticket**: ", value=u.mention, inline=True)
+                    embed.add_field(name='**Come funziona il ticket**?',
                                 value='Attendi che uno ' + staff_ds.mention + ' o uno ' + staff_cb.mention + ' ti risponda, nel mentre descrivi il tuo problema',
                                 inline=False)
-                embed.add_field(name='Per chiudere il ticket digita: ', value='!close')
-                embed.set_footer(text="Ticket made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
-                await ticket_channel.send(embed=embed)
+                    embed.add_field(name='Per chiudere il ticket digita: ', value='!close')
+                    embed.set_footer(text="Ticket made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
+                    await ticket_channel.send(embed=embed)
+            else:
+                None
     elif em.emoji == '✔️':
         if u.id == 975755516380860489:
             None
         else:
-            time.sleep(5)
-            await em.message.channel.delete(reason='Il seguente ticket è stato chiuso')
+            if '-ticket' in em.message.channel.name:
+                time.sleep(5)
+                await em.message.channel.delete(reason='Il seguente ticket è stato chiuso')
+            else:
+                None
 
 
 
@@ -172,10 +178,12 @@ async def on_reaction_add(em, u):
 @b.command()
 async def set(ctx):
     if ctx.message.author.permissions_in(ctx.message.channel).administrator:
+        await ctx.channel.purge(limit=1)
         embed = discord.Embed(title='**Ticket bot**', color=discord.Color.dark_gold())
         embed.add_field(name='Reagisci a questo messaggio per aprire un ticket e parlare con lo staff!', value='🎫', inline=False)
         embed.set_footer(text="Ticket made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
         e = '🎫'
+
         em = await ctx.channel.send(embed=embed)
         await em.add_reaction(emoji=e)
     else:
@@ -190,6 +198,7 @@ async def close(ctx):
         ems = await ctx.send(embed=embed)
         mj = '✔️'
         await ems.add_reaction(emoji=mj)
+
     else:
         await ctx.send('Con questo comando puoi chiudere solamente il tuo ticket')
 
