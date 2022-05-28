@@ -230,7 +230,7 @@ async def on_voice_state_update(member, before, after):
         for channel in guild.channels:
             if after.channel.name == 'Entra qua:':
                 memb_ch = await guild.create_voice_channel(name=member.name, category=category)
-                await memb_ch.set_permissions(member, manage_channels=True, mute_members=True)
+                await memb_ch.set_permissions(member, manage_channels=True, mute_members=True, manage_permissions=True)
                 await member.move_to(memb_ch)
             else:
                 None
