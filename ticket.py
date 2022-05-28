@@ -216,4 +216,29 @@ async def help(ctx):
     embed.set_footer(text="Ticket bot made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
     await ctx.send(embed=embed)
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Sezione vocali temporanee, SPERIMENTALE!
+
+
+@b.event
+async def on_voice_state_update(member, before, after):
+    guild = member.guild
+    cc = discord.utils.get(guild.voice_channels, id=980179770849521755)
+    category = discord.utils.get(guild.channels, id=980179615656071260)
+    if before.channel is None and after.channel is not None:
+        for channel in guild.channels:
+            if after.channel.name == 'Entra qua:':
+                memb_ch = await guild.create_voice_channel(name=member.name, category=category)
+                await memb_ch.set_permissions(member, manage_channels=True, mute_members=True)
+                await member.move_to(memb_ch)
+            else:
+                None
+    if before.channel is not None and after.channel is None:
+        for channel in guild.channels:
+            if before.channel.name == member.name:
+                await before.channel.delete()
+
+
+
 b.run(bt)
