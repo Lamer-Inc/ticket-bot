@@ -260,10 +260,24 @@ async def on_voice_state_update(member, before, after):
                 await member.move_to(memb_ch)
             else:
                 None
+    elif before.channel is not None and after.channel is not None:
+        for channel in guild.channels:
+            if after.channel.name == 'Entra qua:':
+                memb_ch = await guild.create_voice_channel(name=member.name, category=category)
+                await memb_ch.set_permissions(member, manage_channels=True, mute_members=True, manage_permissions=True)
+                await member.move_to(memb_ch)
+            else:
+                None
+
     if before.channel is not None and after.channel is None:
         for channel in guild.channels:
             if before.channel.name == member.name:
                 await before.channel.delete()
+    if before.channel is not None and after.channel is not None:
+        for channel in guild.channels:
+            if before.channel.name == member.name:
+                if after.channel != before.channel:
+                    await before.channel.delete()
 
 
 # ----------------------------------------------------------------------------------------------------------------------
