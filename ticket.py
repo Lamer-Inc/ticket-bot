@@ -205,6 +205,7 @@ async def close(ctx):
 
 @b.command()
 async def help(ctx):
+    await ctx.channel.purge(limit=1)
     embed = discord.Embed(title='Aiuto e Crediti', color=discord.Color.red())
     embed.add_field(name='**Lista Comandi**', value='Lista dei comandi del bot!', inline=False)
     embed.add_field(name='!set', value='SOLO STAFF!!! Utilizza il comando nel canale in cui vuoi che gli utenti aprano i ticket', inline=False)
