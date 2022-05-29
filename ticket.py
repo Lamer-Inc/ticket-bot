@@ -213,8 +213,33 @@ async def help(ctx):
     embed.add_field(name='Maggiori info e documentazione del bot: ', value='https://telegra.ph/ParrotBot-05-22', inline=False)
     embed.add_field(name='Creatore del bot: ', value='DiStRuTtOrE_Tm#6449 (ID=586202654087184384)',
                     inline=False)
+    embed.add_field(name='**Vocali temporanee**', value='Aggiungi la reazione 🔊 per aprire il menù apposito', inline=False)
     embed.set_footer(text="Ticket bot made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
-    await ctx.send(embed=embed)
+    help = await ctx.send(embed=embed, delete_after=30)
+    menu_emoji = '🔊'
+    await help.add_reaction(emoji=menu_emoji)
+    r, user = await b.wait_for('reaction_add', check=lambda reaction, user: reaction.emoji == '🔊')
+    if user.id == 975755516380860489:
+            None
+    else:
+        ne = discord.Embed(title='Aiuto e supporto sulle vocali temporanee', colo=discord.Color.orange())
+        ne.add_field(name='Come funzionano le vocali temporanee?', value="**Bisogna anzi tutto non essere connessi in alcun "
+                                                                     "canale vocale**. \n - Quindi bisogna entrare nella "
+                                                                     "vocale chiamata Entra qua: \n - Il bot "
+                                                                     "automaticamente sposterà l'utente in una vocale "
+                                                                     "personale creata con il proprio nickname \n - Per "
+                                                                     "chiudere la vocale bisogna disconnettersi da "
+                                                                     "essa (se ci si sposta in un'altra il bot "
+                                                                     "continua a vedere la persona connessa ad una "
+                                                                     "vocale e quindi non la chiude) \n - Affinché "
+                                                                     "tutto funzioni è necessario che sia prima che "
+                                                                     "dopo l'uso, l'utente sia disconnesso \n - Il bot "
+                                                                     "garantisce anche **i permessi totali al creatore "
+                                                                     "della stanza, in modo da permettergli di "
+                                                                     "invitare gli amici** e gestire la propria stanza, "
+                                                                     "fino alla chiusura.", inline=False)
+        ne.set_footer(text="Ticket bot made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
+        await ctx.channel.send(embed=ne, delete_after=30)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
