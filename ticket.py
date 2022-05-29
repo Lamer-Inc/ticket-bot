@@ -266,5 +266,99 @@ async def on_voice_state_update(member, before, after):
                 await before.channel.delete()
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Sezione LOG
+# creazione stanza per i log
+@b.command()
+async def logcreate(ctx):
+    await ctx.channel.purge(limit=1)
+    if ctx.message.author.permissions_in(ctx.message.channel).administrator:
+        guild = ctx.guild
+        log = discord.utils.get(guild.text_channels, name='parrotbot-log')
+        category = discord.utils.get(guild.channels, id=976162489404358696)
+        if log:
+            await ctx.send('La chat per i log del bot esiste già', delete_after=30)
+            None
+        else:
+            logging = await guild.create_text_channel(name='parrotbot-log', category=category)
+            await logging.set_permissions(guild.get_role(guild.id), send_messages=False, read_messages=False)
+    else:
+        await ctx.send("Per eseguire questo comando devi avere l'amministratore")
+
+
+from discord.utils import get
+parole_bandite = ["nigga", "Frocio", "frocio", "fr0cio", "froci0", "p0rca", "finocchio", "negr", "nig", "P0RC4", "froc", "Porco", "P0rc0", "Porc0", "P0rco", "PORCO", "P0RC0", "PORC0", "P0RCO", "puttana", "negro", "n3gr0",  "N3GRO",  "negr0",  "N3BRO",  "NEGRO",  "nigg3r",  "n1gger",  "n1gg4",  "n1gga",  "nigg4",  "N1GGA",  "N1GG4",  "NIGG4",  "NIGGER",  "N1GG3R",  "NIGG3R",  "n3bro",  "n3br0",  "N3BRO",  "n3gro", "Negro", "negrO"]
+
+
+@b.event
+async def on_message_delete(message):
+    for word in parole_bandite:
+        if word in message.content:
+            None
+        else:
+            contenuto = message.content
+            autore = message.author
+            chat = message.channel.mention
+            time = message.created_at
+            embed = discord.Embed(title='**ParrotBot Log!**', color=discord.Color.blue())
+            embed.add_field(name='**Messaggio eliminato**', value='Messaggio scritto: ' + str(time), inline=False)
+            embed.add_field(name='*Autore del messaggio*: ', value=autore, inline=False)
+            embed.add_field(name='*Contenuto del messaggio*: ', value=contenuto, inline=False)
+            embed.add_field(name='*Chat del messaggio*: ', value=chat, inline=False)
+            embed.set_footer(text="Ticket bot made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
+            guild = message.guild
+            channel = get(guild.channels, name='parrotbot-log')
+            await channel.send(embed=embed)
+            break
+
+
+@b.event
+async def on_message_edit(before, after):
+    autore = before.author
+    chat = before.channel.mention
+    time = before.created_at
+    embed = discord.Embed(title='**ParrotBot Log!**', color=discord.Color.blue())
+    embed.add_field(name='**Messaggio modificato**', value='Messaggio scritto: ' + str(time), inline=False)
+    embed.add_field(name='*Autore del messaggio*: ', value=autore, inline=False)
+    embed.add_field(name='*Contenuto del messaggio originale*: ', value=before.content, inline=False)
+    embed.add_field(name='*Contenuto del messaggio modificato*: ', value=after.content, inline=False)
+    embed.add_field(name='*Chat del messaggio*: ', value=chat, inline=False)
+    embed.set_footer(text="Ticket bot made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
+    guild = before.guild
+    channel = get(guild.channels, name='parrotbot-log')
+    await channel.send(embed=embed)
+
+
+@b.event
+async def on_message(msg):
+    contenuto = msg.content
+    autore = msg.author
+    chat = msg.channel.mention
+    time = msg.created_at
+    for word in parole_bandite:
+        if word in msg.content:
+            await msg.delete()
+            guild = msg.guild
+            staff_ds = discord.utils.get(guild.roles, id=976147012678479912)
+            embed1 = discord.Embed(title='**ParrotBot Log!**', color=discord.Color.red())
+            embed1.add_field(name='**Parola bandita utilizzata!**', value='Non utilizzare parole bandite, non sono gradite nel server' + staff_ds.mention,
+                            inline=False)
+            embed1.add_field(name='*Autore del messaggio*: ', value=autore, inline=False)
+            embed1.add_field(name='*Contenuto del messaggio*: ', value=contenuto, inline=False)
+            await msg.channel.send(embed=embed1, delete_after=15)
+
+            embed = discord.Embed(title='**ParrotBot Log!**', color=discord.Color.red())
+            embed.add_field(name='**Parola bandita utilizzata!**', value='Messaggio scritto: ' + str(time), inline=False)
+            embed.add_field(name='*Autore del messaggio*: ', value=autore, inline=False)
+            embed.add_field(name='*Contenuto del messaggio*: ', value=contenuto, inline=False)
+            embed.add_field(name='*Chat del messaggio*: ', value=chat, inline=False)
+            embed.set_footer(text="Ticket bot made by DiStRuTtOrE_Tm#6449", icon_url=b.user.avatar_url)
+            guild = msg.guild
+            channel = get(guild.channels, name='parrotbot-log')
+            await channel.send(embed=embed)
+
+    await b.process_commands(msg)
+
+
 
 b.run(bt)
